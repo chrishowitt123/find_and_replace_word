@@ -25,8 +25,7 @@ def fileToList(file):
     with open(file, 'r', encoding="latin-1") as f: 
         file_list = [line.strip() for line in f]
         return file_list
-    
-    
+
 #  ui automation steps
 def find_and_replace_keys():
     clipboard.copy(k)
@@ -85,24 +84,22 @@ find_and_replace = dict(zip(orignal_sents, quill_sents))
 
 # ensuring no string has more than 255 chars using more_itertools slice
 for k, v in find_and_replace.items():       
-    if k != v and len(k) < 510:
+    if k != v: 
         if len(k) <= 255 and len(v) <= 255:
             find_and_replace_keys()
-            
         elif 255 < len(k) <= 510 or 255 < len(v) <= 510:
-            firstpart_k, secondpart_k = list(sliced((k), len(k)//2))
-            firstpart_v, secondpart_v = list(sliced((v), len(v)//2))
+            firstpart_k, secondpart_k = list(sliced((k), len(k)//2))[0], list(sliced((k), len(k)//2))[1]
+            firstpart_v, secondpart_v = list(sliced((v), len(v)//2))[0], list(sliced((v), len(v)//2))[1]
             halved = {firstpart_k : firstpart_v,
                       secondpart_k : secondpart_v}
             for k, v in halved.items():
                 find_and_replace_keys()
-                
         elif 510 < len(k) <= 765 or 510 < len(v) <= 765:
-            firstpart_k, secondpart_k, thirdpart_k = list(sliced((k), len(k)//3))
-            firstpart_v, secondpart_v, thirdpart_v = list(sliced((v), len(v)//3))
+            firstpart_k, secondpart_k, thirdpart_k = list(sliced((k), len(k)//3))[0], list(sliced((k), len(k)//3))[1], list(sliced((k), len(k)//3))[2]
+            firstpart_v, secondpart_v, thirdpart_v = list(sliced((v), len(v)//3))[0], list(sliced((v), len(v)//3))[1], list(sliced((v), len(v)//3))[2]
             thirds = {firstpart_k : firstpart_v,
-                      secondpart_k : secondpart_v,
+                      secondpart_k : secondpart_v,  
                       thirdpart_k : thirdpart_v}
-            for k, v in thirds.items():
+            for k, v in halved.items():
                 find_and_replace_keys()
 
