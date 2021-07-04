@@ -3,9 +3,6 @@ import pyautogui
 import pywinauto
 import pygetwindow as gw
 from more_itertools import sliced
-import docx2txt
-import re
-import time
 import nltk
 nltk.download('machado')
 sent_tokenizer=nltk.data.load('tokenizers/punkt/portuguese.pickle')
@@ -35,17 +32,9 @@ def find_and_replace_keys():
     pyautogui.hotkey('tab')
     clipboard.copy(v)
     pyautogui.hotkey('ctrl', 'v')
-    pyautogui.hotkey('tab')
-    pyautogui.hotkey('tab')
-    pyautogui.hotkey('tab')
-    pyautogui.hotkey('enter')
-    pyautogui.hotkey('enter')
-    pyautogui.hotkey('tab')
-    pyautogui.hotkey('tab')
-    pyautogui.hotkey('tab')
-    pyautogui.hotkey('tab')
-    pyautogui.hotkey('tab')
-    pyautogui.hotkey('tab')
+    pyautogui.press('tab', presses=3)
+    pyautogui.press('enter', presses=2)
+    pyautogui.press('tab', presses=6)
     pyautogui.hotkey('enter')
     pyautogui.hotkey('ctrl', 's')
     
@@ -102,4 +91,3 @@ for k, v in find_and_replace.items():
                       thirdpart_k : thirdpart_v}
             for k, v in halved.items():
                 find_and_replace_keys()
-
