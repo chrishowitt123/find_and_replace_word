@@ -3,6 +3,9 @@ import pyautogui
 import pywinauto
 import pygetwindow as gw
 from more_itertools import sliced
+import docx2txt
+import re
+import time
 import nltk
 nltk.download('machado')
 sent_tokenizer=nltk.data.load('tokenizers/punkt/portuguese.pickle')
@@ -71,32 +74,35 @@ def replace_all(text, dic):
     
 orignal_sents = fileToList('ORIGNAL_SENTS.txt')
 quill_sents = fileToList('DEEPL.txt')
-orignal_docx = r'HLA.P.1653_RNT EIA Aquisição Sísmica Offshore Bloco 5-06_Final_20201105.docx'
+# orignal_docx = r'HLA.P.1653_RNT EIA Aquisição Sísmica Offshore Bloco 5-06_Final_20201105.docx'
 
 
 # finding orignal sents and replacing with quill sents
 find_and_replace = dict(zip(orignal_sents, quill_sents))
     
 
-docx_current_sents = set(docx_current_state(orignal_docx))
+# docx_current_sents = set(docx_current_state(orignal_docx))
 
 # ensuring no string has more than 255 chars using more_itertools slice
-for k, v in find_and_replace.items(): 
-    if len(k) <= 255 and len(v) <= 255:
-        find_and_replace_keys()
-    elif 255 < len(k) <= 510 or 255 < len(v) <= 510:
-        firstpart_k, secondpart_k = list(sliced((k), len(k)//2))
-        firstpart_v, secondpart_v = list(sliced((v), len(v)//2))
-        halved = {firstpart_k : firstpart_v,
-                  secondpart_k : secondpart_v}
-        for k, v in halved.items():
+for k, v in find_and_replace.items():       
+    if k != v and len(k) < 510:
+        if len(k) <= 255 and len(v) <= 255:
             find_and_replace_keys()
-    elif 510 < len(k) <= 765 or 510 < len(v) <= 765:
-        current_sents = docx_current_state(orignal_docx)
-        firstpart_k, secondpart_k, thirdpart_k = list(sliced((k), len(k)//3))
-        firstpart_v, secondpart_v, thirdpart_v = list(sliced((v), len(v)//3))
-        thirds = {firstpart_k : firstpart_v,
-                  secondpart_k : secondpart_v,
-                  thirdpart_k : thirdpart_v}
-        for k, v in thirds.items():
-            find_and_replace_keys()
+            
+        elif 255 < len(k) <= 510 or 255 < len(v) <= 510:
+            firstpart_k, secondpart_k = list(sliced((k), len(k)//2))
+            firstpart_v, secondpart_v = list(sliced((v), len(v)//2))
+            halved = {firstpart_k : firstpart_v,
+                      secondpart_k : secondpart_v}
+            for k, v in halved.items():
+                find_and_replace_keys()
+                
+        elif 510 < len(k) <= 765 or 510 < len(v) <= 765:
+            firstpart_k, secondpart_k, thirdpart_k = list(sliced((k), len(k)//3))
+            firstpart_v, secondpart_v, thirdpart_v = list(sliced((v), len(v)//3))
+            thirds = {firstpart_k : firstpart_v,
+                      secondpart_k : secondpart_v,
+                      thirdpart_k : thirdpart_v}
+            for k, v in thirds.items():
+                find_and_replace_keys()
+
